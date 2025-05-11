@@ -1,13 +1,21 @@
 import sqlite3 
 import os 
+import pathlib
 
 def init_db():
     if not os.path.exists('instance'):
         os.makedirs('instance')
     conn = get_db_connection()
-    with open('schema.sql', 'r') as f:
+    
+    # Use the script's directory to find schema.sql
+    current_dir = pathlib.Path(__file__).parent.absolute()
+    schema_path = os.path.join(current_dir, 'schema.sql')
+    
+    with open(schema_path, 'r') as f:
         conn.executescript(f.read())
     conn.close()
+
+# Rest of the file remains unchanged
 
 def get_db_connection():
     conn = sqlite3.connect('instance/notes.db')

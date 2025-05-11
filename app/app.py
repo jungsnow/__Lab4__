@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
-from database import init_db, authenticate_user, register_user, create_note, get_user_notes
+from .database import init_db, authenticate_user, register_user, create_note, get_user_notes
 
 app = Flask(__name__)
 app.secret_key = 'very_unsecure_secret_key'  # Insecure practice
