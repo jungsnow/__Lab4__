@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="search-results">
+        <!-- VULNERABLE: Directly renders the search query -->
+        <h2>Search Results for: {{ query | safe }}</h2>
+        
+        <div class="search-form">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="q" placeholder="Search notes..." value="{{ query }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="notes-grid">
+            {% if results %}
+                {% for note in results %}
+                    <div class="note-card">
+                        <!-- VULNERABLE: Renders unsanitized user input -->
+                        <h3>{{ note['title'] | safe }}</h3>
+                        <div class="note-content">{{ note['content'] | safe }}</div>
+                        <div class="note-date">{{ note['created'] }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No results found for your search.</p>
+            {% endif %}
+        </div>
+        
+        <a href="{{ url_for('notes') }}" class="button">Back to Notes</a>
+    </div>
+{% endblock %}
