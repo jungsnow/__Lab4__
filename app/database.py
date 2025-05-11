@@ -32,4 +32,33 @@ def authenticate_user(username, password):
  
 def register_user(username, password):
     #direct string concatenation 
-    query 
+    query = f"INSERT INTO users (username, password) VALUES ('{username}', '{password}')"
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(query)
+        conn.commit()
+        success = True
+    except sqlite3.Error:
+        success = False
+    conn.close()
+    return success
+
+# note operations 
+def create_note(user_id, title, content):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)", 
+        (user_id, title, content)
+    )
+    conn.commit()
+    conn.close()
+
+def get_user_notes(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM notes WHERE user_id = ?", (user_id,))
+    notes = cursor.fetchall()
+    conn.close()
+    return notes
