@@ -1,2 +1,4 @@
+# Open requirements.txt and replace its contents with:
 Flask==2.0.1
+Werkzeug==2.0.1
 Flask-Session==0.4.0
